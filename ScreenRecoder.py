@@ -2,6 +2,7 @@ import pyautogui
 import cv2
 import numpy as np
 import time
+import os
 from datetime import datetime
 
 def main():
@@ -14,9 +15,13 @@ def main():
     # Video codec (XVID for .avi, or use 'mp4v' for .mp4)
     codec = cv2.VideoWriter_fourcc(*"mp4v")
     
+    # Create recordings folder if it doesn't exist
+    recordings_folder = "recordings"
+    os.makedirs(recordings_folder, exist_ok=True)
+    
     # Generate filename with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"Recording_{timestamp}.avi"
+    filename = os.path.join(recordings_folder, f"Recording_{timestamp}.avi")
     
     # Frame rate (30 FPS is more reasonable than 50)
     fps = 30.0
@@ -29,14 +34,14 @@ def main():
         print("Error: Could not open video writer!")
         return
     
-    # Create preview window (optional)
-    cv2.namedWindow("Live Recording", cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("Live Recording", 640, 360)
+    # Preview window disabled for background recording
+    # cv2.namedWindow("Live Recording", cv2.WINDOW_NORMAL)
+    # cv2.resizeWindow("Live Recording", 640, 360)
     
     print(f"Recording started: {filename}")
     print(f"Resolution: {resolution[0]}x{resolution[1]} @ {fps} FPS")
-    print("Press 'q' to stop recording")
-    print("Press 'p' to pause/resume")
+    print("Press F2 to stop recording")
+    print("Press F3 to pause/resume")
     
     paused = False
     frame_count = 0
@@ -65,15 +70,15 @@ def main():
             cv2.putText(frame, status_text, (50, 40), 
                        cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
             
-            # Display the recording screen
-            cv2.imshow('Live Recording', frame)
+            # Display disabled for background recording
+            # cv2.imshow('Live Recording', frame)
             
-            # Handle keyboard input
+            # Handle keyboard input (works without window)
             key = cv2.waitKey(1) & 0xFF
             
-            if key == ord('q'):  # Quit
+            if key == 0x71:  # F2 key - Quit
                 break
-            elif key == ord('p'):  # Pause/Resume
+            elif key == 0x72:  # F3 key - Pause/Resume
                 paused = not paused
                 print("Recording paused" if paused else "Recording resumed")
     

