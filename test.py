@@ -17,7 +17,7 @@ filename = "Recording.avi"
 fps = 50.0
 
 #VideoWriter object 
-out = cv2.VideoWriter(filename,codec,fps,resoultion)
+out = cv2.VideoWriter(filename,codec,fps,resolution)
 
 
 #Optional 
